@@ -1,11 +1,10 @@
-import requests
 import os
 from dotenv import load_dotenv
 import datetime
 import csv
 import openai
 
-def openai_request(api_key):
+def openai_request():
 
     # Prompt the user for text input
     prompt = input("Enter your prompt: ")
@@ -60,8 +59,7 @@ def data_to_files(text_path, prompts_path, data):
 
 if __name__ == "__main__":
     load_dotenv()
-    api_key = os.getenv('OPENAI_API_KEY')
-    data = openai_request(api_key)
+    data = openai_request()
     text_path = "data/text.csv"
     prompts_path = "data/prompts.csv"
     data_to_files(text_path, prompts_path, data)
