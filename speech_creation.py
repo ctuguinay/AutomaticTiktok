@@ -7,7 +7,7 @@ def generate_wav_files(text_array, id, output_folder_path):
     session_id = os.getenv("TIKTOK_SESSION_ID")
     for index in range(len(text_array)):
         text = text_array[index]
-        output_path = output_folder_path + str(id) + "_" + str(index) + ".wav"
+        output_path = output_folder_path + str(id) + "_" + str(index) + ".mp3"
         tiktok_tts_generation(text, output_path, session_id)
         #audio = AudioSegment.from_file(output_path, format="mp3")
         #audio = audio.speedup(playback_speed=1.1, chunk_size=100, crossfade=25)
