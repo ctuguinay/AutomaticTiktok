@@ -167,8 +167,10 @@ def batch_create(filename: str = 'voice.mp3'):
 def tiktok_tts_generation(req_text, filename, session_id, text_speaker="en_us_006"):
     # Best 
     # en_uk_003
-    # en_us_006
+    # en_us_006 (use this one)
     # en_us_010
+    # en_us_chewbacca
+    # en_us_ghostface
     if filename is not None:
         chunk_size = 200
         textlist = textwrap.wrap(req_text, width=chunk_size, break_long_words=True, break_on_hyphens=False)
