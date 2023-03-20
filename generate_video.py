@@ -26,13 +26,17 @@ def combine_sounds(sound_paths):
     combined_audio.export(main_audio_file_path, format="mp3")
     return length_dict, main_audio_file_path
 
-def generate_video(input_video_path, sound_path, image_paths, length_dict, output_path):
+def generate_video(input_video_path, sound_path, image_paths, length_dict, 
+                   output_caption_path, output_path):
     # Load the input video and the image
     video_clip = VideoFileClip(input_video_path)
     video_clip_length = video_clip.duration
     audio_clip = AudioFileClip(sound_path)
     total_audio_length = audio_clip.duration
     scaling_factor = math.ceil(total_audio_length / video_clip_length)
+    caption_clip = ImageClip(output_caption_path)
+    caption_clip = caption_clip.set_duration(8)
+    caption_clip = caption_clip.set_position(("center", "center"))
     video_clips = [video_clip]
     if scaling_factor > 1:
         for _ in range(scaling_factor):
@@ -58,9 +62,8 @@ def generate_video(input_video_path, sound_path, image_paths, length_dict, outpu
         current_point = current_point + sound_duration
     
     concat_clip = concatenate_videoclips(image_clips, method="compose").set_position(("center", "top"))
-    
-    composite_clip = CompositeVideoClip([composite_clip, concat_clip], size=video_clip.size)
-
+    composite_clip = CompositeVideoClip([composite_clip, concat_clip, caption_clip], size=video_clip.size)
+    #composite_clip = CompositeVideoClip([composite_clip, caption_clip], size=video_clip.size)
     composite_clip = composite_clip.subclip(0, current_point)
     composite_clip.write_videofile(output_path)
 
@@ -95,4 +98,6 @@ if __name__ == "__main__":
     #input_video_path = "data/videos/background_1_short.mp4"
     input_video_path = "data/videos/background_1.mp4"
     output_video_path = main_audio_file_path.replace(".mp3", ".mp4").replace("sounds", "videos")
-    generate_video(input_video_path, main_audio_file_path, image_paths, length_dict, output_video_path)
+    output_caption_path = output_folder_path.replace("sounds", "images") + str(id) + "_caption" + ".jpg"
+    generate_video(input_video_path, main_audio_file_path, image_paths, length_dict, 
+                   output_caption_path, output_video_path)
